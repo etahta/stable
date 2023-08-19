@@ -14,23 +14,22 @@ firmware-qlogic \
 firmware-iwlwifi \
 firmware-linux \
 firmware-linux-free \
-firmware-linux-nonfree \
-firmware-misc-nonfree \
 firmware-ralink \
 firmware-realtek \
 firmware-samsung \
 firmware-ti-connectivity -y
-
-      #firmware-atheros \
-     # firmware-amd-graphics \
-     # firmware-siano \
-     # bluez-firmware \     
-     # firmware-myricom \
-     # firmware-cavium \
-     # firmware-bnx2 \
-     # firmware-bnx2x \
-     # firmware-brcm80211 \
-     #firmware-libertas \
+	#firmware-linux-nonfree \
+	#firmware-misc-nonfree \
+      	#firmware-atheros \
+     	# firmware-amd-graphics \
+     	# firmware-siano \
+     	# bluez-firmware \     
+     	# firmware-myricom \
+	# firmware-cavium \
+	# firmware-bnx2 \
+	# firmware-bnx2x \
+	# firmware-brcm80211 \
+	#firmware-libertas \
 
 chroot chroot apt --fix-broken install -y
 chroot chroot apt-get install -f -y # eksik bağımlılıkları tamamlaması için.
