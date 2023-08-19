@@ -14,12 +14,13 @@ firmware-qlogic \
 firmware-iwlwifi \
 firmware-linux \
 firmware-linux-free \
+firmware-linux-nonfree \
+firmware-misc-nonfree \
 firmware-ralink \
 firmware-realtek \
 firmware-samsung \
 firmware-ti-connectivity -y
-	#firmware-linux-nonfree \
-	#firmware-misc-nonfree \
+	
       	#firmware-atheros \
      	# firmware-amd-graphics \
      	# firmware-siano \
