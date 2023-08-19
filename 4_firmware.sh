@@ -6,7 +6,6 @@
       #firmware-intel-sound zd1211-firmware firmware-sof-signed  firmware-siano firmware-myricom firmware-netxen firmware-qlogic firmware-cavium firmware-atheros \
 
 chroot chroot apt-get install \
-firmware-amd-graphics \
 firmware-intel-sound \
 firmware-sof-signed \
 zd1211-firmware \
@@ -19,10 +18,11 @@ firmware-linux-nonfree \
 firmware-misc-nonfree \
 firmware-ralink \
 firmware-realtek \
-firmware-atheros \
 firmware-samsung \
 firmware-ti-connectivity -y
 
+      #firmware-atheros \
+     # firmware-amd-graphics \
      # firmware-siano \
      # bluez-firmware \     
      # firmware-myricom \
