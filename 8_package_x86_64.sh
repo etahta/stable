@@ -34,6 +34,6 @@ chroot chroot apt --fix-broken install -y
 
 
 #printer server
-chroot chroot apt-get install cups cups-client -y
+chroot chroot apt-get install cups cups-client system-config-printer*  --no-install-recommends -y
 #--no-install-recommends
 #grub-pc-bin grub-efi efibootmgr linux-image-amd64

@@ -11,6 +11,29 @@ apt-get install -f -y # eksik bağımlılıkları tamamlaması için.
 #wget -O /tmp/ofis.deb https://wdl1.pcfg.cache.wpscdn.com/wpsdl/wpsoffice/download/linux/11664/wps-office_11.1.0.11664.XA_amd64.deb
 wget -O /tmp/ofis.deb https://download.onlyoffice.com/install/desktop/editors/linux/onlyoffice-desktopeditors_amd64.deb
 dpkg -i /tmp/ofis.deb
+
+for item in $(ls chroot/opt/onlyoffice/desktopeditors/dictionaries)
+do
+	if [ "$item" == "tr_TR" ]
+	then
+		#rm -rf ./liste/$item
+		echo "var" 1>/dev/null
+	else
+		rm -rf chroot/opt/onlyoffice/desktopeditors/dictionaries/$item
+	fi
+done
+
+for item in $(ls chroot/opt/onlyoffice/desktopeditors/locales)
+do
+	if [ "$item" == "tr.pak" ]
+	then
+		#rm -rf ./liste/$item
+		echo "var" 1>/dev/null
+	else
+		rm -rf chroot/opt/onlyoffice/desktopeditors/locales/$item
+	fi
+done
+
 #wget -O /usr/bin/onlyoffice-desktopeditors https://github.com/ONLYOFFICE/DesktopEditors/releases/download/v7.4.1/DesktopEditors-x86_64.AppImage
 #chmod a+x /usr/bin/onlyoffice-desktopeditors
 
