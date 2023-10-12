@@ -10,6 +10,28 @@ do
 	fi
 done
 
+for item in $(ls chroot/opt/onlyoffice/desktopeditors/dictionaries)
+do
+	if [ "$item" == "tr_TR" ]
+	then
+		#rm -rf ./liste/$item
+		echo "var" 1>/dev/null
+	else
+		rm -rf chroot/opt/onlyoffice/desktopeditors/dictionaries/$item
+	fi
+done
+
+for item in $(ls chroot/opt/onlyoffice/desktopeditors/locales)
+do
+	if [ "$item" == "tr.pak" ]
+	then
+		#rm -rf ./liste/$item
+		echo "var" 1>/dev/null
+	else
+		rm -rf chroot/opt/onlyoffice/desktopeditors/locales/$item
+	fi
+done
+
 rm -rf chroot/usr/share/applications/xinput_calibrator.desktop
 #chroot chroot /bin/bash || true
 ### Remove sudo (optional)
