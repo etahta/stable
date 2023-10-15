@@ -30,7 +30,7 @@ remove_packages:
 autologin_enabled: false
 # auto_partition_enabled: true
 set_root_password: false
-# use_chpasswd: true
+## use_chpasswd: true
 # use_usermod: true
 keep_userdata : false
 minimal_instalation_enabled: false
