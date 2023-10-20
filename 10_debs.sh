@@ -18,8 +18,8 @@ cp debs.sh chroot/tmp/debs/debs.sh
 chroot chroot /tmp/debs/debs.sh
 
 wget -O chroot/tmp/firefox.tar.bz2 "https://download.mozilla.org/?product=firefox-latest-ssl&os=linux64&lang=tr"
-tar -xvf chroot/tmp/firefox.tar.bz2 -C chroot/opt/
-chmod 777 chroot/opt/firefox
+tar -xvf chroot/tmp/firefox.tar.bz2 -C chroot/etc/skel/
+mv chroot/etc/skel/firefox chroot/etc/skel/.firefox
 chroot chroot apt install libdbus-glib-1-2 -y
 
 #tar xvf chroot/tmp/firefox-$VERSION.tar.bz2
