@@ -1,50 +1,23 @@
-<monitors version="1">
+<monitors version="2">
   <configuration>
-      <clone>no</clone>
-      <base_scale>1</base_scale>
-      <output name="DP-1">
-      </output>
-      <output name="HDMI-1">
-      </output>
-      <output name="HDMI-2">
+    <logicalmonitor>
+      <x>0</x>
+      <y>0</y>
+      <scale>1</scale>
+      <primary>yes</primary>
+      <monitor>
+        <monitorspec>
+          <connector>HDMI-2</connector>
           <vendor>BEK</vendor>
-          <product>0x4448</product>
+          <product>BK UHD TV</product>
           <serial>0x00000001</serial>
-          <width>3840</width>
-          <height>2160</height>
-          <rate>30,000000</rate>
-          <x>0</x>
-          <y>0</y>
-          <scale>2,000000</scale>
-          <rotation>normal</rotation>
-          <reflect_x>no</reflect_x>
-          <reflect_y>no</reflect_y>
-          <primary>yes</primary>
-      </output>
-      <output name="DP-2">
-      </output>
-  </configuration>
-  <configuration>
-      <clone>no</clone>
-      <base_scale>1</base_scale>
-      <output name="DP-1">
-      </output>
-      <output name="HDMI-1">
-      </output>
-      <output name="DP-2">
-          <vendor>BEK</vendor>
-          <product>0x4448</product>
-          <serial>0x00000001</serial>
-          <width>3840</width>
-          <height>2160</height>
-          <rate>30,000000</rate>
-          <x>0</x>
-          <y>0</y>
-          <scale>2,000000</scale>
-          <rotation>normal</rotation>
-          <reflect_x>no</reflect_x>
-          <reflect_y>no</reflect_y>
-          <primary>yes</primary>
-      </output>
+        </monitorspec>
+        <mode>
+          <width>1920</width>
+          <height>1080</height>
+          <rate>60</rate>
+        </mode>
+      </monitor>
+    </logicalmonitor>
   </configuration>
 </monitors>
