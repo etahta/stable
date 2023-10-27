@@ -23,8 +23,13 @@ echo ' linux /boot/vmlinuz boot=live locales=tr_TR.UTF-8,en_US.UTF-8 keyboard-la
 echo '    initrd /boot/initrd.img' >> liveiso/boot/grub/grub.cfg
 echo '}' >> liveiso/boot/grub/grub.cfg
 
-echo 'menuentry "Yukle GNU/Linux 64-bit" --class liveiso {' >> liveiso/boot/grub/grub.cfg
-echo '    linux /boot/vmlinuz boot=live quiet init=/usr/bin/installer --' >> liveiso/boot/grub/grub.cfg
+echo 'menuentry "Yukle (sda Diskli Faz-1-2-3`ler) GNU/Linux 64-bit" --class liveiso {' >> liveiso/boot/grub/grub.cfg
+echo '    linux /boot/vmlinuz boot=live quiet init=/usr/bin/installersd --' >> liveiso/boot/grub/grub.cfg
+echo '    initrd /boot/initrd.img' >> liveiso/boot/grub/grub.cfg
+echo '}' >> liveiso/boot/grub/grub.cfg
+
+echo 'menuentry "Yukle (nvme Diskli Faz-3`ler) GNU/Linux 64-bit" --class liveiso {' >> liveiso/boot/grub/grub.cfg
+echo '    linux /boot/vmlinuz boot=live quiet init=/usr/bin/installernvme --' >> liveiso/boot/grub/grub.cfg
 echo '    initrd /boot/initrd.img' >> liveiso/boot/grub/grub.cfg
 echo '}' >> liveiso/boot/grub/grub.cfg
 

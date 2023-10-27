@@ -15,17 +15,27 @@ fallback(){
 }
 ########################choose from multiple hard drives#############################
 hdisk=""
-DISKX=""
-     
-#######################################################################3     
-        hdisk=$(
-ls /sys/block/ | grep -v loop | while read line ; do
-    if grep 0 /sys/block/"$line"/removable &>/dev/null; then
-        echo $line
-        break
-    fi
-done)
-##########################################################################
+     USBKEYS=($(
+                xargs -n1 readlink < <(echo /sys/block/*) |
+                sed -ne 's+^.*/usb[0-9].*/\([^/]*\)$+/sys/block/\1/device/uevent+p' |
+                xargs grep -H ^DRIVER=sd |
+                sed s/device.uevent.*$/size/ |
+                xargs grep -Hv ^0$ |
+                cut -d / -f 4                 ))
+        
+
+         if [ "$USBKEYS" == "sdb" ]
+         then
+          #echo "diskiniz sda"
+          hdisk="sda"
+          else
+          #echo "diskiniz sdb"
+          hdisk="sdb"
+         fi
+	 if [ ${#USBKEYS[@]} -eq 0 ];then
+         echo "flahs disk yok"
+            hdisk="sda"
+        fi
           echo "Sabit Diskiniz $hdisk Sistem Kurulumu Buraya Yapilacaktir..."
 
 ###########################end choose from multiple hard drives#############################
@@ -61,35 +71,27 @@ fi
 if [[ "$partitioning" == "true" ]] ; then
     dd if=/dev/zero of=/dev/${DISK} bs=512 count=1
     sync && sleep 1
-    
-    #########################################################
-    if echo ${DISK} | grep nvme ; then
-        DISKX=${DISK}p
-    else
-        DISKX=${DISK}
-    fi
-    ############################################################
     if [[ -d /sys/firmware/efi ]] ; then
         yes | parted /dev/${DISK} mktable gpt || fallback
         yes | parted /dev/${DISK} mkpart primary fat32 1 "100MB" || fallback
         yes | parted /dev/${DISK} mkpart primary fat32 100MB "100%" || fallback
         sync && sleep 1
-        yes | mkfs.vfat /dev/${DISKX}1 || fallback
+        yes | mkfs.vfat /dev/${DISK}1 || fallback
         sync && sleep 1
-        yes | mkfs.ext4  /dev/${DISKX}2 || fallback
+        yes | mkfs.ext4  /dev/${DISK}2 || fallback
         yes | parted /dev/${DISK} set 1 esp on || fallback
         sync && sleep 1
-        mount /dev/${DISKX}2  /target || fallback
+        mount /dev/${DISK}2  /target || fallback
         mkdir -p /target/boot/efi || true
-        mount /dev/${DISKX}1 /target/boot/efi  || fallback
+        mount /dev/${DISK}1 /target/boot/efi  || fallback
     else
         yes | parted /dev/${DISK} mktable msdos || fallback
         yes | parted /dev/${DISK} mkpart primary fat32 1 "100%" || fallback
         sync && sleep 1
-        yes | mkfs.ext4 /dev/${DISKX}1  || fallback
+        yes | mkfs.ext4 /dev/${DISK}1  || fallback
         yes | parted /dev/${DISK} set 1 boot on || fallback
         sync && sleep 1
-        mount /dev/${DISKX}1 /target  || fallback
+        mount /dev/${DISK}1 /target  || fallback
     fi
 else
     echo "Please input rootfs part (example sda2)"
@@ -123,10 +125,10 @@ echo -e "\033[31mSon ayarlar tamamlaniyor....\033[0m"
 #*************************************************************************************
 if [[ "$partitioning" == "true" ]] ; then
     if [[ -d /sys/firmware/efi ]] ; then
-        echo "/dev/${DISKX}2 /               ext4    errors=remount-ro        0       1" > /target/etc/fstab  || fallback
-        echo "/dev/${DISKX}1 /boot/efi       vfat    umask=0077               0       0" >> /target/etc/fstab  || fallback
+        echo "/dev/${DISK}2 /               ext4    errors=remount-ro        0       1" > /target/etc/fstab  || fallback
+        echo "/dev/${DISK}1 /boot/efi       vfat    umask=0077               0       0" >> /target/etc/fstab  || fallback
     else
-        echo "/dev/${DISKX}1 /               ext4    errors=remount-ro        0       1" > /target/etc/fstab  || fallback
+        echo "/dev/${DISK}1 /               ext4    errors=remount-ro        0       1" > /target/etc/fstab  || fallback
     fi
 else
     echo "Please write fstab file. Press any key to open editor."
@@ -152,12 +154,17 @@ echo -e "\033[32m-------Faz3 Ayarlari Yapiliyor..---------\033[0m"
 	#chroot /target touch /etc/skel/faz3
 	chroot /target cp /etc/fazconfig/cinnamon-monitors.xml /etc/skel/.config/cinnamon-monitors.xml
 	chroot /target cp -f /etc/fazconfig/config.ini /usr/share/pardus/pardus-lightdm-greeter/data/config.ini
-	#chroot /target rm -rf /etc/skel/.config/pulse
-	#chroot /target cp -rf /etc/fazconfig/pulse /etc/skel/.config/
-	chroot /target mkdir  /etc/skel/.config/autostart
-	chroot /target cp  /etc/fazconfig/selectsound /etc/skel/.config/autostart/selectsound
-	chroot /target chmod 555 /etc/skel/.config/autostart/selectsound
-	chroot /target dpkg -i /etc/fazconfig/eta-pulse-config_0.4.0_amd64.deb
+	
+	chroot /target rm -rf /etc/skel/.config/pulse
+	chroot /target cp -rf /etc/fazconfig/pulse /etc/skel/.config/pulse
+	
+	chroot /target rm -rf /etc/skel/.config/dconf
+	chroot /target cp -rf /etc/fazconfig/dconf /etc/skel/.config/dconf
+	
+	#chroot /target mkdir  /etc/skel/.config/autostart
+	#chroot /target cp  /etc/fazconfig/selectsound /etc/skel/.config/autostart/selectsound
+	#chroot /target chmod 555 /etc/skel/.config/autostart/selectsound
+	#chroot /target dpkg -i /etc/fazconfig/eta-pulse-config_0.4.0_amd64.deb
 	echo -e "\033[32m-------Dosya Kopyalandi..---------\033[0m"
 fi
 echo -e "\033[31m-------Faz Ayar Kurulumu Tamamlandi---------\033[0m"
@@ -166,6 +173,14 @@ chroot /target apt-get purge live-boot* live-config* live-tools --yes || true
 chroot /target apt-get autoremove --yes || true
 chroot /target update-initramfs -u -k all  || fallback
 
+#etapadmin
+chroot /target useradd -m -s /bin/bash $username || fallback
+#mkdir /target/home/$username || true
+chroot /target chown $username /home/$username
+# user setup
+for grp in cdrom floppy sudo audio dip video plugdev netdev bluetooth lpadmin scanner ; do
+    chroot /target usermod -aG $grp $username || true
+done
 
 #ogretmen
 chroot /target useradd -m -s /bin/bash ogretmen || fallback
@@ -186,22 +201,10 @@ touch /target/home/ebaqr/.config/np
 for grp in cdrom floppy audio dip video plugdev netdev bluetooth lpadmin scanner ; do
     chroot /target usermod -aG $grp ebaqr || true
 done
-
-#etapadmin
-chroot /target useradd -m -s /bin/bash $username || fallback
-#mkdir /target/home/$username || true
-chroot /target chown $username /home/$username
-# user setup
-for grp in cdrom floppy sudo audio dip video plugdev netdev bluetooth lpadmin scanner ; do
-    chroot /target usermod -aG $grp $username || true
-done
-
 #Creating a 6-character password
 passwdgenerator>>/target/etc/qrpsw
 chmod 640 /target/etc/qrpsw
 psw=$(cat /target/etc/qrpsw)
-
-
 
 echo -e "1\n1\n" | chroot /target passwd $username
 #echo -e "$password\n$password\n" | chroot /target passwd root
