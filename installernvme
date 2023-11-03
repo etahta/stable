@@ -19,7 +19,7 @@ DISKX=""
      
 #######################################################################3     
         hdisk=$(
-ls /sys/block/ | grep -v loop | while read line ; do
+ls /sys/block/ | grep -e sd -e nvme | while read line ; do
     if grep 0 /sys/block/"$line"/removable &>/dev/null; then
         echo $line
         break
