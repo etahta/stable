@@ -13,7 +13,7 @@ chroot chroot apt-get install python3-tk --no-install-recommends -y
 #chroot chroot apt-get install bash-completion synaptic gnome-themes-extra -y
 
 #### Usefull stuff
-chroot chroot apt-get install network-manager network-manager-gnome pulseaudio  pavucontrol  --no-install-recommends -y
+chroot chroot apt-get install network-manager network-manager-gnome pipewire wireplumber pipewire-pulse libspa-0.2-bluetooth pavucontrol  --no-install-recommends -y
 chroot chroot apt-get install git make wget --no-install-recommends -y
 #chroot chroot apt-get install xterm -y
 #bluetooth dosyaları
