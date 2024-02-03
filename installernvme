@@ -279,7 +279,7 @@ chroot /target update-grub  || fallback
 #******hosts file localhost added
 bash -c "echo '127.1.1.0 etahta' >> /target/etc/hosts"
 bash -c "echo 'etahta' > /target/etc/hostname"
-echo 'deb https://depo.pardus.org.tr/pardus yirmibir main contrib non-free' >> /target/etc/apt/sources.list
+echo 'deb https://depo.pardus.org.tr/pardus yirmiuc main contrib non-free' >> /target/etc/apt/sources.list
 rm -rf /target/usr/share/applications/sifredegistir.desktop
 
 umount -f -R /target/* || true
