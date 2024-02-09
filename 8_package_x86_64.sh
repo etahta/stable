@@ -1,6 +1,6 @@
 #!/bin/bash
 chroot chroot apt-get update
-chroot chroot apt-get install vlc gnome-terminal gnome-screenshot  gvfs-backends --no-install-recommends -y
+chroot chroot apt-get install vlc evince gnome-terminal gnome-screenshot  gvfs-backends --no-install-recommends -y
 chroot chroot apt-get install gstreamer1.0-x -y
 # evince
 #chroot chroot apt-get install chromium chromium-l10n  -y
