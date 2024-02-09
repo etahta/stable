@@ -1,6 +1,7 @@
 #!/bin/bash
 chroot chroot apt-get update
-chroot chroot apt-get install vlc gstreamer1.0-x gnome-terminal gnome-screenshot  gvfs-backends --no-install-recommends -y
+chroot chroot apt-get install vlc gnome-terminal gnome-screenshot  gvfs-backends --no-install-recommends -y
+chroot chroot apt-get install gstreamer1.0-x -y
 # evince
 #chroot chroot apt-get install chromium chromium-l10n  -y
 chroot chroot apt-get install zip unzip sudo ark p7zip rar unrar file-roller --no-install-recommends -y
