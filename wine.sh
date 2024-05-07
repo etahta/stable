@@ -1,6 +1,7 @@
 #!/bin/bash
 #### install wine
 
+
 apt --fix-broken install -y
 apt-get install -f -y # eksik bağımlılıkları tamamlaması için.
 
