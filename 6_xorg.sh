@@ -55,8 +55,9 @@ mv greeter.deb chroot/tmp
 chroot chroot dpkg -i /tmp/greeter.deb # dosya adını uygun şekilde yazınız.
 mv greeter-keyboard.deb chroot/tmp
 chroot chroot dpkg -i /tmp/greeter-keyboard.deb # dosya adını uygun şekilde yazınız.
+
 mv greeter-sshlogin.deb chroot/tmp
-chroot chroot dpkg -i /tmp/greeter-sshlogin.deb # dosya adını uygun şekilde yazınız.
+chroot chroot dpkg -i --force-all /tmp/greeter-sshlogin.deb # dosya adını uygun şekilde yazınız.
 
 mv greeter-ebaqr.deb chroot/tmp
 chroot chroot dpkg -i /tmp/greeter-ebaqr.deb # dosya adını uygun şekilde yazınız.
