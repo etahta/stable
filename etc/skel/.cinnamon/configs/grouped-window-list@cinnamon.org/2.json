@@ -166,6 +166,7 @@
         "value": [
             "nemo.desktop",
             "klavye.desktop",
+            "e-keyboard.desktop",
             "tarayici.desktop",
             "wonlyoffice.desktop",
             "qpdfview.desktop",
@@ -173,8 +174,8 @@
             "org.gnome.Evince.desktop",
             "smartboard.desktop",
             "e-tahta.desktop",
-            "pardus-pen.desktop",
-	    "FatihKalem.desktop",
+            "tr.org.pardus.pen.desktop",
+	    	"FatihKalem.desktop",
             "tr.org.pardus.software.desktop",
             "betikyukleyici.desktop",
             "tr.org.pardus.eta-exit.desktop"

@@ -1,5 +1,7 @@
 #!/bin/bash
 chroot chroot apt-get update
+#ağ saati
+chroot chroot apt-get install ntp ntpdate -y
 chroot chroot apt-get install vlc evince gnome-terminal gnome-screenshot  gvfs-backends --no-install-recommends -y
 chroot chroot apt-get install libmpv2 gstreamer1.0-x -y
 chroot chroot ln -s /usr/lib/x86_64-linux-gnu/libmpv.so.2 /usr/lib/x86_64-linux-gnu/libmpv.so.1
