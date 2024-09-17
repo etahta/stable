@@ -146,7 +146,8 @@ fi
 echo -e "\033[31m-------Faz Ayar Kurulumu Basladi---------\033[0m"
 #echo "-------Faz Ayar Kurulumu Basladi---------"
 if lsusb | grep -qE "(6615:0084|6615:0085|6615:0086|6615:0087|6615:0088|6615:0c20|2621:2201|2621:4501)" ; then
-echo "faz-1-2"
+	echo "faz-1-2"
+	chroot /target cp -f /etc/fazconfig/config.ini /usr/share/pardus/pardus-lightdm-greeter/data/config.ini
 else
 echo -e "\033[32m-------Faz3 Ayarlari Yapiliyor..---------\033[0m"
 	#chroot /target touch /etc/skel/faz3
@@ -156,8 +157,8 @@ echo -e "\033[32m-------Faz3 Ayarlari Yapiliyor..---------\033[0m"
 	chroot /target rm -rf /etc/skel/.config/pulse
 	chroot /target cp -rf /etc/fazconfig/pulse /etc/skel/.config/pulse
 	
-	chroot /target rm -rf /etc/skel/.config/dconf
-	chroot /target cp -rf /etc/fazconfig/dconf /etc/skel/.config/dconf
+	#chroot /target rm -rf /etc/skel/.config/dconf
+	#chroot /target cp -rf /etc/fazconfig/dconf /etc/skel/.config/dconf
 	
 	#chroot /target mkdir  /etc/skel/.config/autostart
 	#chroot /target cp  /etc/fazconfig/selectsound /etc/skel/.config/autostart/selectsound
