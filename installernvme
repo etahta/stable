@@ -111,11 +111,14 @@ fi
 
 #*************************************************************************************
 echo -e "\033[31mSistem yuklenmeye baslandi. Tahmini 3-5 dakika sürecektir.. Lutfen bekleyiniz.....\033[0m"
-#echo "Sistem yuklenmeye baslandi. Tahmini 3-5 dakika sürecektir..Lutfen bekleyiniz....."
-#echo "........................................................................................................."
 echo -e "\033[32m...............................................................................................\033[0m"
-ls /source/ | xargs -n1 -P$(nproc) -I% rsync -ravhHAX --info=progress2 /source/% /target/ &>/dev/null|| fallback
+###ls /source/ | xargs -n1 -P$(nproc) -I% rsync -ravhHAX --info=progress2 /source/% /target/ &>/dev/null|| fallback
 #rsync -ravhHAX --info=progress2 /source/% /target/|| fallback
+clear
+rsync --archive --info=progress2  --no-inc-recursive --human-readable /source/ /target/ \
+   &>/dev/null | dialog --infobox 'Etap Yukleniyor...' 0 0 || fallback
+sync
+clear
 echo -e "\033[32m...............................................................................................\033[0m"
 echo -e "\033[31mSistem yuklenmesi tamamlaniyor....\033[0m"
 echo -e "\033[32m...............................................................................................\033[0m"
