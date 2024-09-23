@@ -5,6 +5,9 @@ chroot chroot apt-get install ntp ntpdate dialog -y
 chroot chroot apt-get install vlc evince gnome-terminal gnome-screenshot  gvfs-backends --no-install-recommends -y
 chroot chroot apt-get install libmpv2 gstreamer1.0-x -y
 chroot chroot ln -s /usr/lib/x86_64-linux-gnu/libmpv.so.2 /usr/lib/x86_64-linux-gnu/libmpv.so.1
+chroot chroot  apt-get install libatk-adaptor libgail-common -y
+chroot chroot  apt install murrine-themes -y
+
 # evince
 #chroot chroot apt-get install chromium chromium-l10n  -y
 chroot chroot apt-get install zip unzip sudo ark p7zip rar unrar file-roller --no-install-recommends -y
@@ -18,7 +21,9 @@ chroot chroot apt-get install python3-tk --no-install-recommends -y
 #chroot chroot apt-get install bash-completion synaptic gnome-themes-extra -y
 
 #### Usefull stuff
-chroot chroot apt-get install network-manager network-manager-gnome pulseaudio  pavucontrol  --no-install-recommends -y
+
+#### Usefull stuff
+chroot chroot apt-get install network-manager network-manager-gnome pipewire wireplumber pipewire-pulse libspa-0.2-bluetooth pavucontrol  --no-install-recommends -y
 chroot chroot apt-get install git make wget --no-install-recommends -y
 #chroot chroot apt-get install xterm -y
 #bluetooth dosyaları
