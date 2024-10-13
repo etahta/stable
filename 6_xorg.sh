@@ -45,11 +45,13 @@ wget -O greeter-keyboard.deb  https://github.com/bayramkarahan/pardus-lightdm-gr
 
 wget -O greeter-sshlogin.deb  https://github.com/bayramkarahan/pardus-lightdm-greeter-sshlogin/releases/download/current/pardus-lightdm-greeter-sshlogin_1.0_all.deb
 
-wget -O greeter-qrcode.deb  https://github.com/bayramkarahan/pardus-lightdm-greeter-qrcode/releases/download/current/pardus-lightdm-greeter-qrcode_1.1_all.deb
+#wget -O greeter-qrcode.deb  https://github.com/bayramkarahan/pardus-lightdm-greeter-qrcode/releases/download/current/pardus-lightdm-greeter-qrcode_1.1_all.deb
 
 wget -O greeter-ebaqr.deb https://github.com/bayramkarahan/pardus-lightdm-greeter-ebaqr/releases/download/current/pardus-lightdm-greeter-ebaqr_1.0_all.deb
 
 wget -O greeter-listener.deb https://github.com/bayramkarahan/pardus-greeter-lightdm-listener/releases/download/current/pardus-lightdm-greeter-listener_1.0_all.deb
+
+wget -O greeter-qrkilit.deb https://github.com/bayramkarahan/pardus-lightdm-greeter-qrkilit/releases/download/current/pardus-lightdm-greeter-qrkilit_1.2_all.deb
 
 mv greeter.deb chroot/tmp
 chroot chroot dpkg -i /tmp/greeter.deb # dosya adını uygun şekilde yazınız.
@@ -65,8 +67,8 @@ chroot chroot dpkg -i /tmp/greeter-ebaqr.deb # dosya adını uygun şekilde yaz�
 mv greeter-listener.deb chroot/tmp
 chroot chroot dpkg -i /tmp/greeter-listener.deb # dosya adını uygun şekilde yazınız.
 
-mv greeter-qrcode.deb chroot/tmp
-chroot chroot dpkg -i /tmp/greeter-qrcode.deb # dosya adını uygun şekilde yazınız.
+mv greeter-qrkilit.deb chroot/tmp
+chroot chroot dpkg -i /tmp/greeter-qrkilit.deb # dosya adını uygun şekilde yazınız.
 
 
 
