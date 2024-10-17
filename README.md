@@ -6,4 +6,4 @@ sudo ./createIso.sh
 bu script bir debian imajı oluşturuyor 
 onlyoffice pdf eklendi
 wine güncellendi.
-ebaqr güncellendi. 
+ebaqr güncellendi.  
