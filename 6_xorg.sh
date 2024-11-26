@@ -39,11 +39,11 @@ chroot chroot apt-get autoremove -y
 chroot chroot apt-get install -f -y # eksik bağımlılıkları tamamlaması için.
 chroot chroot apt --fix-broken install -y
 
-wget -O greeter.deb https://github.com/bayramkarahan/pardus-lightdm-greeter/releases/download/current/pardus-lightdm-greeter_0.0.8_all.deb
+wget -O greeter.deb https://github.com/bayramkarahan/pardus-lightdm-greeter/releases/download/current/pardus-lightdm-greeter_0.2.0_all.deb
 
 wget -O greeter-keyboard.deb  https://github.com/bayramkarahan/pardus-lightdm-greeter-keyboard/releases/download/current/pardus-lightdm-greeter-keyboard_1.0_all.deb
 
-wget -O greeter-sshlogin.deb  https://github.com/bayramkarahan/pardus-lightdm-greeter-sshlogin/releases/download/current/pardus-lightdm-greeter-sshlogin_1.0_all.deb
+#wget -O greeter-sshlogin.deb  https://github.com/bayramkarahan/pardus-lightdm-greeter-sshlogin/releases/download/current/pardus-lightdm-greeter-sshlogin_1.0_all.deb
 
 #wget -O greeter-qrcode.deb  https://github.com/bayramkarahan/pardus-lightdm-greeter-qrcode/releases/download/current/pardus-lightdm-greeter-qrcode_1.1_all.deb
 
@@ -58,8 +58,8 @@ chroot chroot dpkg -i /tmp/greeter.deb # dosya adını uygun şekilde yazınız.
 mv greeter-keyboard.deb chroot/tmp
 chroot chroot dpkg -i /tmp/greeter-keyboard.deb # dosya adını uygun şekilde yazınız.
 
-mv greeter-sshlogin.deb chroot/tmp
-chroot chroot dpkg -i --force-all /tmp/greeter-sshlogin.deb # dosya adını uygun şekilde yazınız.
+#mv greeter-sshlogin.deb chroot/tmp
+#chroot chroot dpkg -i --force-all /tmp/greeter-sshlogin.deb # dosya adını uygun şekilde yazınız.
 
 mv greeter-ebaqr.deb chroot/tmp
 chroot chroot dpkg -i /tmp/greeter-ebaqr.deb # dosya adını uygun şekilde yazınız.
