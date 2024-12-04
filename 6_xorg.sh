@@ -39,7 +39,7 @@ chroot chroot apt-get autoremove -y
 chroot chroot apt-get install -f -y # eksik bağımlılıkları tamamlaması için.
 chroot chroot apt --fix-broken install -y
 
-wget -O greeter.deb https://github.com/bayramkarahan/pardus-lightdm-greeter/releases/download/current/pardus-lightdm-greeter_0.2.0_all.deb
+wget -O greeter.deb https://github.com/bayramkarahan/pardus-lightdm-greeter/releases/download/current/pardus-lightdm-greeter_40.0.0_all.deb
 
 wget -O greeter-keyboard.deb  https://github.com/bayramkarahan/pardus-lightdm-greeter-keyboard/releases/download/current/pardus-lightdm-greeter-keyboard_1.0_all.deb
 
