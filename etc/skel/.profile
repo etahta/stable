@@ -25,4 +25,4 @@ fi
 if [ -d "$HOME/.local/bin" ] ; then
     PATH="$HOME/.local/bin:$PATH"
 fi
-setxkbmap -layout tr &
+#setxkbmap -layout tr &
