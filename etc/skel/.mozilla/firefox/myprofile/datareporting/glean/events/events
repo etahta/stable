@@ -1,0 +1,15 @@
+{"timestamp":6112502,"category":"session_restore","name":"backup_can_be_loaded_session_file","extra":{"path_key":"clean","can_load":"false","glean_timestamp":"1738090151103","loadfail_reason":"File doesn't exist."}}
+{"timestamp":6112508,"category":"session_restore","name":"backup_can_be_loaded_session_file","extra":{"glean_timestamp":"1738090151110","can_load":"true","loadfail_reason":"N/A","path_key":"recovery"}}
+{"timestamp":6112508,"category":"session_restore","name":"backup_can_be_loaded_session_file","extra":{"loadfail_reason":"N/A","can_load":"true","path_key":"recovery","glean_timestamp":"1738090151110"}}
+{"timestamp":6112509,"category":"session_restore","name":"shutdown_success_session_startup","extra":{"glean_timestamp":"1738090151111","shutdown_reason":"N/A","shutdown_ok":"false"}}
+{"timestamp":6114498,"category":"webcompatreporting","name":"reason_dropdown","extra":{"setting":"required","glean_timestamp":"1738090153100"}}
+{"timestamp":6118095,"category":"jsonfile","name":"load_logins","extra":{"glean_timestamp":"1738090156697","value":""}}
+{"timestamp":6118171,"category":"upgrade_dialog","name":"trigger_reason","extra":{"glean_timestamp":"1738090156773","value":"not-major"}}
+{"timestamp":6124635,"category":"doh","name":"state_rollback","extra":{"value":"null","glean_timestamp":"1738090163237"}}
+{"timestamp":6125653,"category":"normandy","name":"validation_failed_nimbus_experiment","extra":{"feature":"addAnImageInPDF","glean_timestamp":"1738090164255","value":"add-an-image-to-pdf-with-alt-text-rollout","reason":"invalid-feature"}}
+{"timestamp":6125653,"category":"nimbus_events","name":"validation_failed","extra":{"glean_timestamp":"1738090164255","experiment":"add-an-image-to-pdf-with-alt-text-rollout","feature":"addAnImageInPDF","reason":"invalid-feature"}}
+{"timestamp":6125654,"category":"nimbus_events","name":"is_ready","extra":{"glean_timestamp":"1738090164255"}}
+{"timestamp":6136119,"category":"privacy.sanitize","name":"dialog_open","extra":{"context":"browser","glean_timestamp":"1738090174721"}}
+{"timestamp":6145756,"category":"privacy.sanitize","name":"clearing_time_span_selected","extra":{"time_span":"0","glean_timestamp":"1738090184358"}}
+{"timestamp":6145757,"category":"privacy.sanitize","name":"clear","extra":{"site_settings":"true","glean_timestamp":"1738090184359","context":"browser","cookies_and_storage":"true","history_form_data_downloads":"true","cache":"true"}}
+{"timestamp":6157131,"category":"doh","name":"state_shutdown","extra":{"glean_timestamp":"1738090195733","value":"null"}}

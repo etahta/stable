@@ -1,0 +1,3 @@
+{"timestamp":6124261,"category":"browser.usage","name":"interaction","extra":{"source":"nav-bar","glean_timestamp":"1738090162863","widget_id":"PanelUI-menu-button","flow_id":"{b9d7d7a9-37bc-4664-8fed-cdc34860f510}"},"execution_counter":3}
+{"timestamp":6127620,"category":"browser.usage","name":"interaction","extra":{"glean_timestamp":"1738090166222","flow_id":"{b9d7d7a9-37bc-4664-8fed-cdc34860f510}","source":"app-menu","widget_id":"appMenu-history-button"},"execution_counter":3}
+{"timestamp":6135713,"category":"browser.usage","name":"interaction","extra":{"widget_id":"appMenuClearRecentHistory","glean_timestamp":"1738090174315","flow_id":"{b9d7d7a9-37bc-4664-8fed-cdc34860f510}","source":"app-menu"},"execution_counter":3}

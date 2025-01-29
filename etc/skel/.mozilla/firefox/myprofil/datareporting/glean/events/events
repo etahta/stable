@@ -1,3 +1,0 @@
-{"timestamp":1028700,"category":"fog.validation","name":"validate_early_event"}
-{"timestamp":1029340,"category":"webcompatreporting","name":"reason_dropdown","extra":{"setting":"disabled"}}
-{"timestamp":1031137,"category":"nimbus_events","name":"validation_failed","extra":{"experiment":"next-generation-accessibility-engine-powering-screen-readers","reason":"invalid-feature","feature":"accessibilityCache"}}
