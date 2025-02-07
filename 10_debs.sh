@@ -21,7 +21,10 @@ wget -O chroot/tmp/firefox.tar.bz2 "https://download.mozilla.org/?product=firefo
 tar -xvf chroot/tmp/firefox.tar.bz2 -C chroot/etc/skel/
 mv chroot/etc/skel/firefox chroot/etc/skel/.firefox
 chroot chroot apt install libdbus-glib-1-2 -y
-
+mkdir -p chroot/usr/lib/firefox
+cd chroot/usr/lib/firefox
+ln -s ../../../etc/skel/.firefox/firefox firefox
+cd -
 #tar xvf chroot/tmp/firefox-$VERSION.tar.bz2
 #rm chroot/tmp/firefox-$VERSION.tar.bz2
 #mv ./firefox chroot/opt/
