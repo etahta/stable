@@ -1,15 +1,16 @@
-.#!/bin/bash
+#!/bin/bash
 #### install wine
-
-
 apt --fix-broken install -y
 apt-get install -f -y # eksik bağımlılıkları tamamlaması için.
-
 #apt --purge remove wine* -y
 apt autoremove -y
-#dpkg --add-architecture i386
+
+wget -O /tmp/winehq.key https://dl.winehq.org/wine-builds/winehq.key
 apt update
 dpkg --add-architecture i386
+apt install software-properties-common -y
+apt-key add /tmp/winehq.key
+
 apt install software-properties-common -y
 #key ekleniyor
 mkdir -pm755 /etc/apt/keyrings
