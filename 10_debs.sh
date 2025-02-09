@@ -22,8 +22,8 @@ tar -xvf chroot/tmp/firefox.tar.bz2 -C chroot/etc/skel/
 mv chroot/etc/skel/firefox chroot/etc/skel/.firefox
 chroot chroot apt install libdbus-glib-1-2 -y
 mkdir -p chroot/usr/lib/firefox
-ln -s chroot/etc/skel/.firefox/firefox chroot/usr/lib/firefox/firefox
-
+ln -s /etc/skel/.firefox/firefox chroot/usr/lib/firefox/firefox
+ln -s /etc/skel/.firefox/firefox chroot/usr/bin/firefox
 
 #tar xvf chroot/tmp/firefox-$VERSION.tar.bz2
 #rm chroot/tmp/firefox-$VERSION.tar.bz2
