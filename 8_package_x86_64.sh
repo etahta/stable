@@ -29,8 +29,13 @@ chroot chroot apt-get install network-manager network-manager-gnome pulseaudio  
 
 chroot chroot apt-get install git make wget --no-install-recommends -y
 #chroot chroot apt-get install xterm -y
+
+#printer server
+chroot chroot apt-get install cups cups-client system-config-printer* system-config-printer printer-driver-* -y
+
 #bluetooth dosyaları
 chroot chroot apt-get install bluetooth bluez blueman bluez-tools rfkill pulseaudio-module-bluetooth --no-install-recommends -y 
+
 
 # mpv 
 #chroot chroot apt-get install gtk3-nocsd e2fsprogs dosfstools qml-module-qt-labs-platform wpasupplicant ntfs-3g --no-install-recommends -y
@@ -47,7 +52,6 @@ chroot chroot apt-get install -f -y # eksik bağımlılıkları tamamlaması iç
 chroot chroot apt --fix-broken install -y
 
 
-#printer server
-chroot chroot apt-get install cups cups-client system-config-printer*  --no-install-recommends -y
+
 #--no-install-recommends
 #grub-pc-bin grub-efi efibootmgr linux-image-amd64
