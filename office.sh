@@ -9,7 +9,9 @@ apt-get install -f -y # eksik bağımlılıkları tamamlaması için.
 #apt install libreoffice-l10n-tr -y
 #wget -O /tmp/ofis.deb http://depo.pardus.org.tr/etap/pool/non-free/w/wps-office/wps-office_10.1.0.6757pardus2_amd64.deb
 #wget -O /tmp/ofis.deb https://wdl1.pcfg.cache.wpscdn.com/wpsdl/wpsoffice/download/linux/11664/wps-office_11.1.0.11664.XA_amd64.deb
-wget -O /tmp/ofis.deb https://download.onlyoffice.com/install/desktop/editors/linux/onlyoffice-desktopeditors_amd64.deb
+
+#wget -O /tmp/ofis.deb https://download.onlyoffice.com/install/desktop/editors/linux/onlyoffice-desktopeditors_amd64.deb #son versiyonu indirir
+wget -O /tmp/ofis.deb https://github.com/ONLYOFFICE/DesktopEditors/releases/download/v8.2.2/onlyoffice-desktopeditors_amd64.deb
 dpkg -i /tmp/ofis.deb
 
 
