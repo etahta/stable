@@ -1,0 +1,544 @@
+#!/bin/bash
+#set -e
+set -x
+#### Check root
+if [[ ! $UID -eq 0 ]] ; then
+    echo -e "\033[31;1mYou must be root!\033[:0m"
+    exit 1
+fi
+#### Remove all environmental variable
+for e in $(env | sed "s/=.*//g") ; do
+    unset "$e" &>/dev/null
+done
+#### Set environmental variables
+export PATH=/bin:/usr/bin:/sbin:/usr/sbin
+export LANG=C
+export SHELL=/bin/bash
+export TERM=linux
+export DEBIAN_FRONTEND=noninteractive#!/bin/bash
+#### Install dependencies
+if which apt &>/dev/null && [[ -d /var/lib/dpkg && -d /etc/apt ]] ; then
+    apt-get update
+    #apt-mark hold grub-efi-amd64-signed
+    #apt-get update --fix-missing -y
+    #apt-mark hold grub-efi-amd64-signed
+    #apt --only-upgrade install grub-efi-amd64-signed -y
+    
+    echo "işlem başladı....."
+    #rm /var/lib/dpkg/info/grub*
+    #dpkg --configure -a
+    #apt-mark hold grub-efi-amd64-signed
+    #apt-get update --fix-missing
+    #apt-get upgrade
+    #apt-get install curl mtools squashfs-tools grub-pc-bin grub-efi xorriso debootstrap -y
+    apt install xorriso grub-pc-bin grub-efi mtools make python3 dosfstools e2fsprogs squashfs-tools python3-yaml gcc wget curl unzip xz-utils debootstrap git erofs-utils zstd -y
+    #grub-pc-bin grub-efi
+#    # For 17g package build
+#    apt-get install git devscripts equivs -y
+fi
+#### For 17g package build
+apt-get install git devscripts equivs -y
+#set -ex
+#### Chroot create
+mkdir chroot  # || true
+##### For debian
+#ln -s sid /usr/share/debootstrap/scripts/yirmibir
+
+#debootstrap --arch=amd64 --no-merged-usr sid chroot https://deb.debian.org/debian
+#echo 'deb http://packages.linuxmint.com/pool/' > chroot/etc/apt/sources.list
+
+#debootstrap --arch=amd64 --no-merged-usr sid chroot https://deb.debian.org/debian
+#echo 'deb https://deb.debian.org/debian sid main contrib non-free' > chroot/etc/apt/sources.list
+
+#debootstrap --arch=amd64 --no-merged-usr testing chroot https://deb.debian.org/debian
+#echo 'deb https://deb.debian.org/debian testing main contrib non-free non-free-firmware' > chroot/etc/apt/sources.list
+
+debootstrap --arch=amd64 stable chroot https://deb.debian.org/debian
+echo 'deb https://deb.debian.org/debian stable main contrib non-free non-free-firmware' > chroot/etc/apt/sources.list
+
+#debootstrap --arch=amd64 --no-merged-usr yirmibir chroot https://depo.pardus.org.tr/pardus
+#echo 'deb https://depo.pardus.org.tr/pardus yirmibir main contrib non-free' > chroot/etc/apt/sources.list
+
+#debootstrap --arch=amd64 --no-merged-usr ondokuz chroot https://19.depo.pardus.org.tr/etap
+#echo 'deb https://19.depo.pardus.org.tr/etap ondokuz main contrib non-free' > chroot/etc/apt/sources.list
+
+#### Fix apt & bind
+# apt sandbox user root
+echo "APT::Sandbox::User root;" > chroot/etc/apt/apt.conf.d/99sandboxroot
+for i in dev dev/pts proc sys; do mount -o bind /$i chroot/$i; done
+chroot chroot apt-get install gnupg -y
+
+#### grub packages
+#chroot chroot apt-get dist-upgrade -y
+chroot chroot apt-get install grub-pc-bin grub-efi-ia32-bin grub-efi -y
+
+#### live packages for debian/devuan
+chroot chroot apt-get install live-config live-boot -y
+echo "DISABLE_DM_VERITY=true" >> chroot/etc/live/boot.conf
+
+#### Configure system
+cat > chroot/etc/apt/apt.conf.d/01norecommend << EOF
+APT::Install-Recommends "0";
+APT::Install-Suggests "0";
+EOF
+
+# Set sh as bash inside of dash (optional)
+rm -f chroot/bin/sh
+ln -s bash chroot/bin/sh
+
+#### Remove bloat files after dpkg invoke (optional)
+cat > chroot/etc/apt/apt.conf.d/02antibloat << EOF
+#DPkg::Post-Invoke {"rm -rf /usr/share/locale || true";};
+DPkg::Post-Invoke {"rm -rf /usr/share/man || true";};
+DPkg::Post-Invoke {"rm -rf /usr/share/help || true";};
+DPkg::Post-Invoke {"rm -rf /usr/share/doc || true";};
+DPkg::Post-Invoke {"rm -rf /usr/share/info || true";};
+EOF
+
+##skel dizini kopyalanıyor
+cp etc/ -rf chroot/
+chmod 777 chroot/etc/boot.d/*
+chmod 777 chroot/etc/rc.local
+chmod 777 chroot/etc/dkms/no-autoinstall
+
+
+cp usr/ -rf chroot/
+#cp opt/ -rf chroot/
+#cp lib/ -rf chroot/
+
+#!/bin/bash
+#### liquorix kernel
+#curl https://liquorix.net/liquorix-keyring.gpg | chroot chroot apt-key add -
+#echo "deb http://liquorix.net/debian testing main" > chroot/etc/apt/sources.list.d/liquorix.list
+#chroot chroot apt-get update -y
+#chroot chroot apt-get install linux-image-liquorix-amd64 -y
+#chroot chroot apt-get install linux-headers-liquorix-amd64 -y
+
+#### stock kernel 
+chroot chroot apt-get update -y
+chroot chroot apt-get install linux-image-amd64 -y
+chroot chroot apt-get install linux-headers-amd64 -y
+#chroot chroot apt-get install linux-headers-$(uname -r) -y
+cp installersd chroot/usr/bin/installersd
+cp installernvme chroot/usr/bin/installernvme
+cp passwdgenerator chroot/usr/bin/passwdgenerator
+cp faz chroot/usr/bin/faz
+chmod a+s chroot/usr/bin/faz
+#!/bin/bash
+      #firmware-ivtv firmware-ipw2x00 \
+      #firmware-zd1211
+      #firmware-b43-installer \
+      #firmware-b43legacy-installer \
+      #firmware-intel-sound zd1211-firmware firmware-sof-signed  firmware-siano firmware-myricom firmware-netxen firmware-qlogic firmware-cavium firmware-atheros \
+
+chroot chroot apt-get install \
+firmware-intel-sound \
+firmware-sof-signed \
+zd1211-firmware \
+firmware-netxen \
+firmware-qlogic \
+firmware-iwlwifi \
+firmware-linux \
+firmware-linux-free \
+firmware-linux-nonfree \
+firmware-misc-nonfree \
+firmware-ralink \
+firmware-realtek \
+firmware-samsung \
+firmware-ti-connectivity -y
+	
+      	#firmware-atheros \
+     	# firmware-amd-graphics \
+     	# firmware-siano \
+     	# bluez-firmware \     
+     	# firmware-myricom \
+	# firmware-cavium \
+	# firmware-bnx2 \
+	# firmware-bnx2x \
+	# firmware-brcm80211 \
+	#firmware-libertas \
+
+chroot chroot apt --fix-broken install -y
+chroot chroot apt-get install -f -y # eksik bağımlılıkları tamamlaması için.
+
+ # gcc güncelleniyor
+chroot chroot apt install build-essential -y
+chroot chroot apt-get install manpages-dev -y
+#!/bin/bash
+#### xorg & desktop pkgs
+
+chroot chroot apt-get install xorg xserver-xorg xinit xserver-xorg-input-multitouch xserver-xorg-input-evdev dbus-x11 -y
+chroot chroot apt-get install slick-greeter lightdm lightdm-settings apparmor -y # giriş ekranı olarak lightdm yerine istediğinizi kurabilirsiniz.
+#chroot chroot apt-get install system-config-printer system-config-printer-common cups -y
+
+#### Install lightdm (for lxde and xfce only)
+#chroot chroot apt-get install lightdm lightdm-gtk-greeter -y
+
+#### Install lxde-gtk3
+#echo "deb https://raw.githubusercontent.com/lxde-gtk3/binary-packages/master stable main" > chroot/etc/apt/sources.list.d/lxde-gtk3.list
+#curl https://raw.githubusercontent.com/lxde-gtk3/binary-packages/master/dists/stable/Release.key | chroot chroot apt-key add -
+#chroot chroot apt-get update
+#chroot chroot apt-get install lxde-core xdg-utils -y
+
+#### Install xfce
+#chroot chroot apt-get update
+#chroot chroot apt-get install xfce4 xfce4-goodies -y
+
+#### Install gnome
+#chroot chroot apt-get install gnome-core -y
+
+#### Install cinnamon
+chroot chroot apt-get update
+chroot chroot apt-get install cinnamon cinnamon-desktop-environment nemo-fileroller cinnamon-l10n fonts-liberation inxi --no-install-recommends -y
+#chroot chroot apt-get install mousepad -y
+chroot chroot apt-get remove evince gnome-terminal chromium firefox-esr totem pidgin thunderbird --no-install-recommends -y
+chroot chroot apt-get autoremove -y
+#chroot chroot apt-get install okular -y
+#chroot chroot apt-get install firefox-esr firefox-esr-l10n-tr firefox-esr-l10n-trs -y
+#chroot chroot apt-get install cinnamon plank task-cinnamon-desktop -y
+
+#### Install kde
+#chroot chroot apt-get update
+#chroot chroot apt-get install  kde-plasma-desktop plasma-desktop kde-config-screenlocker dolphin kwin-x11 qml-module-org-kde-newstuff desktop-base kscreen plasma-nm plasma-pa kate -y
+
+#### etap greeter install
+chroot chroot apt-get install -f -y # eksik bağımlılıkları tamamlaması için.
+chroot chroot apt --fix-broken install -y
+
+wget -O greeter.deb https://github.com/bayramkarahan/pardus-lightdm-greeter/releases/download/current/pardus-lightdm-greeter_40.0.0_all.deb
+
+wget -O greeter-keyboard.deb  https://github.com/bayramkarahan/pardus-lightdm-greeter-keyboard/releases/download/current/pardus-lightdm-greeter-keyboard_1.0_all.deb
+
+#wget -O greeter-sshlogin.deb  https://github.com/bayramkarahan/pardus-lightdm-greeter-sshlogin/releases/download/current/pardus-lightdm-greeter-sshlogin_1.0_all.deb
+
+#wget -O greeter-qrcode.deb  https://github.com/bayramkarahan/pardus-lightdm-greeter-qrcode/releases/download/current/pardus-lightdm-greeter-qrcode_1.1_all.deb
+
+wget -O greeter-ebaqr.deb https://github.com/bayramkarahan/pardus-lightdm-greeter-ebaqr/releases/download/current/pardus-lightdm-greeter-ebaqr_1.0_all.deb
+
+wget -O greeter-listener.deb https://github.com/bayramkarahan/pardus-greeter-lightdm-listener/releases/download/current/pardus-lightdm-greeter-listener_1.0_all.deb
+
+wget -O greeter-qrkilit.deb https://github.com/bayramkarahan/pardus-lightdm-greeter-qrkilit/releases/download/current/pardus-lightdm-greeter-qrkilit_1.2_all.deb
+
+mv greeter.deb chroot/tmp
+chroot chroot dpkg -i /tmp/greeter.deb # dosya adını uygun şekilde yazınız.
+mv greeter-keyboard.deb chroot/tmp
+chroot chroot dpkg -i /tmp/greeter-keyboard.deb # dosya adını uygun şekilde yazınız.
+
+#mv greeter-sshlogin.deb chroot/tmp
+#chroot chroot dpkg -i --force-all /tmp/greeter-sshlogin.deb # dosya adını uygun şekilde yazınız.
+
+mv greeter-ebaqr.deb chroot/tmp
+chroot chroot dpkg -i /tmp/greeter-ebaqr.deb # dosya adını uygun şekilde yazınız.
+
+mv greeter-listener.deb chroot/tmp
+chroot chroot dpkg -i /tmp/greeter-listener.deb # dosya adını uygun şekilde yazınız.
+
+mv greeter-qrkilit.deb chroot/tmp
+chroot chroot dpkg -i /tmp/greeter-qrkilit.deb # dosya adını uygun şekilde yazınız.
+
+
+
+chroot chroot apt --fix-broken install -y
+chroot chroot apt-get install -f -y # eksik bağımlılıkları tamamlaması için.
+#!/bin/bash
+#klavye için gerekli paket
+chroot chroot apt-get install console-setup console-common console-data keyboard-configuration  -y
+
+#### language settings (Turkish)
+echo "tr_TR.UTF-8 UTF-8" > chroot/etc/locale.gen
+echo "LANG=tr_TR.UTF-8" > chroot/etc/default/locale
+echo "Europe/Istanbul" > chroot/etc/timezone
+chroot chroot timedatectl set-timezone Europe/Istanbul || true
+ln -s ../usr/share/zoneinfo/Europe/Istanbul chroot/etc/localtime
+cat > chroot/etc/X11/xorg.conf.d/10-keyboard.conf << EOF
+Section "InputClass"
+Identifier "system-keyboard"
+MatchIsKeyboard "on"
+Option "XkbLayout" "tr"
+Option "XkbModel" "pc105"
+#Option "XkbVariant" "f"
+EndSection
+EOF
+chroot chroot locale-gen
+#!/bin/bash
+chroot chroot apt-get update
+#ağ saati
+chroot chroot apt-get install ntp ntpdate dialog -y
+chroot chroot apt-get install vlc evince gnome-terminal gnome-screenshot  gvfs-backends --no-install-recommends -y
+chroot chroot apt-get install libmpv2 gstreamer1.0-x -y
+chroot chroot ln -s /usr/lib/x86_64-linux-gnu/libmpv.so.2 /usr/lib/x86_64-linux-gnu/libmpv.so.1
+chroot chroot  apt-get install libatk-adaptor libgail-common -y
+chroot chroot  apt install murrine-themes -y
+
+# evince
+#chroot chroot apt-get install chromium chromium-l10n  -y
+chroot chroot apt-get install zip unzip sudo ark p7zip rar unrar file-roller --no-install-recommends -y
+#chroot chroot apt-get install lsb-release systemsettings okular konsole -y
+
+#Tab key parameters listing
+chroot chroot apt-get install lsb-release systemsettings  bash-completion --no-install-recommends -y
+chroot chroot apt-get install python3-tk --no-install-recommends -y
+
+#chroot chroot apt-get install pcmanfm -y 
+#chroot chroot apt-get install bash-completion synaptic gnome-themes-extra -y
+
+#### Usefull stuff
+
+#### Usefull stuff
+#chroot chroot apt-get install network-manager network-manager-gnome pipewire wireplumber pipewire-pulse libspa-0.2-bluetooth pavucontrol  --no-install-recommends -y
+#### Usefull stuff
+chroot chroot apt-get install network-manager network-manager-gnome pulseaudio  pavucontrol  --no-install-recommends -y
+
+chroot chroot apt-get install git make wget --no-install-recommends -y
+#chroot chroot apt-get install xterm -y
+
+#printer server
+chroot chroot apt-get install cups cups-client system-config-printer* system-config-printer printer-driver-* -y
+
+#bluetooth dosyaları
+chroot chroot apt-get install bluetooth bluez blueman bluez-tools rfkill pulseaudio-module-bluetooth --no-install-recommends -y 
+
+
+# mpv 
+#chroot chroot apt-get install gtk3-nocsd e2fsprogs dosfstools qml-module-qt-labs-platform wpasupplicant ntfs-3g --no-install-recommends -y
+chroot chroot apt-get install gtk3-nocsd e2fsprogs dosfstools wpasupplicant ntfs-3g --no-install-recommends -y
+
+#### e-ag
+#chroot chroot apt install e-ag-client e-ag-x11client libnss3-tools -y
+#chroot chroot apt remove xrdp -y
+#chroot chroot apt install xrdp -y
+#chroot chroot apt install e-ag-client e-ag-x11client -y
+chroot chroot apt install usbutils libnss3-tools --no-install-recommends -y
+
+chroot chroot apt-get install -f -y # eksik bağımlılıkları tamamlaması için.
+chroot chroot apt --fix-broken install -y
+
+
+
+#--no-install-recommends
+#grub-pc-bin grub-efi efibootmgr linux-image-amd64
+#!/bin/bash
+#### install osk
+
+
+chroot chroot apt --fix-broken install -y
+chroot chroot apt-get install -f -y # eksik bağımlılıkları tamamlaması için.
+echo "kurulacak***************************************************************"
+chroot chroot apt install git wget gir1.2-gtk-3.0 console-setup python3-gi python3-pip usbutils tzdata python3-dev python3-pynput -y
+chroot chroot apt install onboard -y
+chroot chroot apt install gir1.2-atspi-2.0 -y
+#mousetweaks -y
+#onboard-data
+chroot chroot apt --fix-broken install -y
+chroot chroot apt-get install -f -y # eksik bağımlılıkları tamamlaması için.
+#wget -O osk.deb  https://github.com/bayramkarahan/gtk-keyboard-osk/releases/download/current/osk_0.1.0_all.deb
+#mv osk.deb chroot/tmp
+#chroot chroot dpkg -i /tmp/osk.deb # dosya adını uygun şekilde yazınız.
+#rm -rf /tmp/gtk-keyboard-osk
+
+#!/bin/bash
+#### install debs
+
+
+echo "kurulacak***************************************************************"
+mkdir chroot/tmp/debs
+#wget -O chroot/tmp/debs/chrome.deb https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+#wget -O chroot/tmp/debs/brave.deb http://depo.pardus.org.tr/pardus/pool/non-free/b/brave-browser/brave-browser_1.45.133_amd64.deb
+
+#wget -O chroot/tmp/debs/firefox-l10n.deb http://ftp.tr.debian.org/debian/pool/main/f/firefox/firefox-l10n-tr_113.0-1_all.deb
+#wget -O chroot/tmp/debs/firefox.deb http://ftp.tr.debian.org/debian/pool/main/f/firefox/firefox_113.0-1_amd64.deb 
+
+cp debs/* chroot/tmp/debs/
+
+
+cp debs.sh chroot/tmp/debs/debs.sh
+#run install
+chroot chroot /tmp/debs/debs.sh
+
+wget -O chroot/tmp/firefox.tar.bz2 "https://download.mozilla.org/?product=firefox-latest-ssl&os=linux64&lang=tr"
+tar -xvf chroot/tmp/firefox.tar.bz2 -C chroot/etc/skel/
+mv chroot/etc/skel/firefox chroot/etc/skel/.firefox
+chroot chroot apt install libdbus-glib-1-2 -y
+mkdir -p chroot/usr/lib/firefox
+ln -s /etc/skel/.firefox/firefox chroot/usr/lib/firefox/firefox
+ln -s /etc/skel/.firefox/firefox chroot/usr/bin/firefox
+
+#tar xvf chroot/tmp/firefox-$VERSION.tar.bz2
+#rm chroot/tmp/firefox-$VERSION.tar.bz2
+#mv ./firefox chroot/opt/
+#chmod 755 chroot/opt/firefox
+#apt update
+#apt install libdbus-glib-1-2 --reinstall -y
+#!/bin/bash
+#### install wine
+
+
+echo "kurulacak***************************************************************"
+mkdir chroot/tmp
+
+cp wine.sh chroot/tmp/wine.sh
+#run install
+chroot chroot /tmp/wine.sh
+
+#!/bin/bash
+#### install wpsoffice
+
+
+echo "kurulacak***************************************************************"
+mkdir chroot/tmp
+
+cp office.sh chroot/tmp/office.sh
+
+#run install
+chroot chroot /tmp/office.sh
+
+i#!/bin/bash
+#### install themes
+
+
+echo "açılış teması yapılandırılıyor"
+
+#run install
+chroot chroot apt install plymouth* -y
+cp etahta.png chroot/usr/share/plymouth/themes/lines/debian.png
+cp logo.png chroot/usr/share/plymouth/themes/lines/logo.png
+cp duvar.svg chroot/usr/share/desktop-base/emerald-theme/login/background.svg
+cp duvar.svg chroot/usr/share/desktop-base/emerald-theme/login/background-nologo.svg
+
+cp duvar.svg chroot/usr/share/desktop-base/emerald-theme/wallpaper/contents/images/1280x1024.svg
+cp duvar.svg chroot/usr/share/desktop-base/emerald-theme/wallpaper/contents/images/1600x1200.svg
+cp duvar.svg chroot/usr/share/desktop-base/emerald-theme/wallpaper/contents/images/1920x1080.svg
+cp duvar.svg chroot/usr/share/desktop-base/emerald-theme/wallpaper/contents/images/1920x1200.svg
+
+cp duvar.svg chroot/usr/share/desktop-base/emerald-theme/lockscreen/contents/images/1280x1024.svg
+cp duvar.svg chroot/usr/share/desktop-base/emerald-theme/lockscreen/contents/images/1600x1200.svg
+cp duvar.svg chroot/usr/share/desktop-base/emerald-theme/lockscreen/contents/images/1920x1080.svg
+cp duvar.svg chroot1920x1200.svg
+
+chroot chroot plymouth-set-default-theme -R lines
+
+
+chroot chroot apt-get install -f -y # eksik bağımlılıkları tamamlaması için.
+chroot chroot apt --fix-broken install -y
+#!/bin/bash
+
+
+#### meb sertifikası
+#wget http://sertifika.meb.gov.tr/MEB_SERTIFIKASI.cer -O /tmp/MEB_SERTIFIKASI.cer
+#openssl x509 -inform DER -in MEB_SERTIFIKASI.cer -out /tmp/MEB_SERTIFIKASI.crt
+#cp /tmp/MEB_SERTIFIKASI.crt chroot/usr/local/share/ca-certificates/MEB_SERTIFIKASI.crt
+#chroot chroot update-ca-certificates
+
+chroot chroot openssl x509 -inform DER -in /usr/local/share/ca-certificates/MEB_SERTIFIKASI.cer -out /usr/local/share/ca-certificates/MEB_SERTIFIKASI.crt
+
+
+
+chroot chroot update-ca-certificates -v
+
+
+#!/bin/bash
+for item in $(ls chroot/usr/share/locale)
+do
+	if [ "$item" == "tr" ] || [ "$item" == "en" ] || [ "$item" == "tr_TR.UTF-8" ] || [ "$item" == "tr_TR.utf8" ] || [ "$item" == "tr_TR" ] || [ "$item" == "tr.UTF-8" ] || [ "$item" == "tr.utf8" ]
+	then
+		#rm -rf ./liste/$item
+		echo "var" 1>/dev/null
+	else
+		rm -rf chroot/usr/share/locale/$item
+	fi
+done
+
+for item in $(ls chroot/opt/onlyoffice/desktopeditors/dictionaries)
+do
+	if [ "$item" == "tr_TR" ]
+	then
+		#rm -rf ./liste/$item
+		echo "var" 1>/dev/null
+	else
+		rm -rf chroot/opt/onlyoffice/desktopeditors/dictionaries/$item
+	fi
+done
+
+for item in $(ls chroot/opt/onlyoffice/desktopeditors/locales)
+do
+	if [ "$item" == "tr.pak" ]
+	then
+		#rm -rf ./liste/$item
+		echo "var" 1>/dev/null
+	else
+		rm -rf chroot/opt/onlyoffice/desktopeditors/locales/$item
+	fi
+done
+
+rm -rf chroot/usr/share/applications/xinput_calibrator.desktop
+#chroot chroot /bin/bash || true
+### Remove sudo (optional)
+#chroot chroot apt purge sudo -y
+#chroot chroot apt remove thunar -y
+#chroot chroot apt purge thunar -y
+chroot chroot apt autoremove -y
+apt update
+apt install libdbus-glib-1-2 ---reinstall -y
+#chroot chroot apt-get update
+rm -rf chroot/etc/apt/sources.list.d/*
+#### Clear logs and history
+chroot chroot apt-get clean
+
+
+rm -f chroot/root/.bash_history
+rm -rf chroot/var/lib/apt/lists/*
+rm -rf chroot/tmp/*
+
+find chroot/var/log/ -type f | xargs rm -f
+
+#### umount
+for dir in dev dev/pts proc sys ; do
+    while umount -lf -R chroot/$dir 2>/dev/null ; do true; done
+done
+#!/bin/bash
+
+#### Create squashfs
+mkdir -p liveiso/boot || true
+# For better installation time
+#mksquashfs chroot filesystem.squashfs -comp gzip -wildcards
+# For better compress ratio
+mksquashfs chroot filesystem.squashfs -comp xz -wildcards
+
+mkdir -p liveiso/live || true
+#ln -s live liveiso/casper || true #for ubuntu 
+mv filesystem.squashfs liveiso/live/filesystem.squashfs
+
+#### Copy kernel and initramfs (Debian/Devuan)
+cp -pf chroot/boot/initrd.img-* liveiso/boot/initrd.img
+cp -pf chroot/boot/vmlinuz-* liveiso/boot/vmlinuz
+
+#### Write grub.cfg
+mkdir -p liveiso/boot/grub/
+echo 'menuentry "Canli GNU/Linux 64-bit" --class liveiso {' > liveiso/boot/grub/grub.cfg
+echo ' linux /boot/vmlinuz boot=live locales=tr_TR.UTF-8,en_US.UTF-8 keyboard-layouts=tr username=etahta hostname=tahta user-fullname=etahta noswap quiet live-config --' >> liveiso/boot/grub/grub.cfg
+#echo '    linux /boot/vmlinuz boot=live quiet live-config --' >> liveiso/boot/grub/grub.cfg
+echo '    initrd /boot/initrd.img' >> liveiso/boot/grub/grub.cfg
+echo '}' >> liveiso/boot/grub/grub.cfg
+
+#echo 'menuentry "Yukle (sda Diskli Faz-1-2-3`ler) GNU/Linux 64-bit" --class liveiso {' >> liveiso/boot/grub/grub.cfg
+#echo '    linux /boot/vmlinuz boot=live quiet init=/usr/bin/installersd --' >> liveiso/boot/grub/grub.cfg
+#echo '    initrd /boot/initrd.img' >> liveiso/boot/grub/grub.cfg
+#echo '}' >> liveiso/boot/grub/grub.cfg
+
+#echo 'menuentry "Yukle (nvme Diskli Faz-3`ler) GNU/Linux 64-bit" --class liveiso {' >> liveiso/boot/grub/grub.cfg
+#echo '    linux /boot/vmlinuz boot=live quiet init=/usr/bin/installernvme --' >> liveiso/boot/grub/grub.cfg
+#echo '    initrd /boot/initrd.img' >> liveiso/boot/grub/grub.cfg
+#echo '}' >> liveiso/boot/grub/grub.cfg
+
+echo 'menuentry "Yukle GNU/Linux 64-bit" --class liveiso {' >> liveiso/boot/grub/grub.cfg
+echo '    linux /boot/vmlinuz boot=live quiet init=/usr/bin/installernvme --' >> liveiso/boot/grub/grub.cfg
+echo '    initrd /boot/initrd.img' >> liveiso/boot/grub/grub.cfg
+echo '}' >> liveiso/boot/grub/grub.cfg
+
+#echo 'menuentry "Installer Graphic Screen GNU/Linux 64-bit" --class liveiso {' >> liveiso/boot/grub/grub.cfg
+#echo '    linux /boot/vmlinuz boot=live username=liveinstall quiet --' >> liveiso/boot/grub/grub.cfg
+#echo '    initrd /boot/initrd.img' >> liveiso/boot/grub/grub.cfg
+#echo '}' >> liveiso/boot/grub/grub.cfg
+
+#### Create iso
+grub-mkrescue liveiso -o liveiso-gnulinux-$(date +%s).iso

@@ -52,7 +52,7 @@ rm -rf chroot/var/lib/apt/lists/*
 rm -rf chroot/tmp/*
 
 find chroot/var/log/ -type f | xargs rm -f
-
+chroot chroot update-initramfs -u
 #### umount
 for dir in dev dev/pts proc sys ; do
     while umount -lf -R chroot/$dir 2>/dev/null ; do true; done
