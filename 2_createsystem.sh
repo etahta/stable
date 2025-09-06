@@ -57,6 +57,8 @@ chroot chroot apt-get install grub-pc-bin grub-efi-ia32-bin grub-efi -y
 
 #### live packages for debian/devuan
 chroot chroot apt-get install live-config live-boot -y
+chroot chroot apt-get install bash coreutils initramfs-tools -y 
+
 echo "DISABLE_DM_VERITY=true" >> chroot/etc/live/boot.conf
 
 #### Configure system
