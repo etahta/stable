@@ -8,7 +8,7 @@ on:
 
 jobs:
     compile:
-        name: Teaiso
+        name: Dagitim
         runs-on: ubuntu-latest
         steps:
           - name: Check out the repo
@@ -17,12 +17,10 @@ jobs:
             uses: addnab/docker-run-action@v3
             with:
                 image: debian:testing
-                options: -v ${{ github.workspace }}:/root -v /output:/output
+                options: --privileged -v ${{ github.workspace }}:/root -v /output:/output
                 run: |
                     cd /root
-                    #pwd
                     bash createIso.sh
-                    #mv *.iso /output/etahta-$(date +%d)-$(date +%m)-$(date +%y).iso
                     mv *.iso /output/etahta.iso
           - uses: "marvinpinto/action-automatic-releases@latest"
             with:
@@ -30,5 +28,4 @@ jobs:
                 automatic_release_tag: "current"
                 prerelease: false
                 title: "Latest release"
-                files: |
-                  /output/*
+                files: /output/etahta.iso

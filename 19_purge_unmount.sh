@@ -41,6 +41,12 @@ rm -rf chroot/usr/share/applications/xinput_calibrator.desktop
 chroot chroot apt autoremove -y
 apt update
 apt install libdbus-glib-1-2 ---reinstall -y
+#chroot chroot /usr/sbin/update-initramfs -u
+# Çekirdek sürümünü öğren
+KERNEL_VERSION=$(chroot chroot dpkg -l | grep 'linux-image' | awk '{print $3}' | head -1)
+# Manuel initramfs oluştur
+chroot chroot mkinitramfs -o /boot/initrd.img-${KERNEL_VERSION} ${KERNEL_VERSION}
+
 #chroot chroot apt-get update
 rm -rf chroot/etc/apt/sources.list.d/*
 #### Clear logs and history
@@ -52,7 +58,7 @@ rm -rf chroot/var/lib/apt/lists/*
 rm -rf chroot/tmp/*
 
 find chroot/var/log/ -type f | xargs rm -f
-chroot chroot /usr/sbin/update-initramfs -u
+
 #### umount
 for dir in dev dev/pts proc sys ; do
     while umount -lf -R chroot/$dir 2>/dev/null ; do true; done
