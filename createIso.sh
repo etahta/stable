@@ -18,11 +18,11 @@ source ./8_package_x86_64.sh
 #################### install osk keyboard
 source ./9_keyboard.sh
 #################### install debs
-source ./10_debs.sh
+#source ./10_debs.sh
 #################### install wine
-source ./11_wine.sh
+#source ./11_wine.sh
 #################### install wpsoffice
-source ./12_office.sh
+#source ./12_office.sh
 #################### install wpsoffice
 source ./13_themes.sh
 #################### Set root password

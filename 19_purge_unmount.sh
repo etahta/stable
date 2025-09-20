@@ -39,15 +39,8 @@ rm -rf chroot/usr/share/applications/xinput_calibrator.desktop
 #chroot chroot apt remove thunar -y
 #chroot chroot apt purge thunar -y
 chroot chroot apt autoremove -y
-apt update
-apt install libdbus-glib-1-2 ---reinstall -y
-#chroot chroot /usr/sbin/update-initramfs -u
-# Çekirdek sürümünü öğren
-#KERNEL_VERSION=$(chroot chroot dpkg -l | grep 'linux-image' | awk '{print $3}' | head -1)
-# Manuel initramfs oluştur
-#chroot chroot mkinitramfs -o /boot/initrd.img-${KERNEL_VERSION} ${KERNEL_VERSION}
 ### update-initrd
-sudo chroot chroot apt-get install -y initramfs-tools linux-image-amd64 dash coreutils libc-bin
+chroot chroot apt-get install -y initramfs-tools linux-image-amd64 dash coreutils libc-bin
 
 fname=$(basename chroot/boot/config*)
 kversion=${fname:7}
