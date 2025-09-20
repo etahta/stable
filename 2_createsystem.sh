@@ -22,11 +22,11 @@ fi
 #### For 17g package build
 apt-get install git devscripts equivs -y
 #set -ex
-#### Chroot create
 
 # Mevcut chroot'u temizle
 rm -rf chroot
-
+#### Chroot create
+mkdir chroot  # || true
 # Yeniden debootstrap kurulumu
 debootstrap --arch=amd64 stable chroot http://deb.debian.org/debian
 echo 'deb https://deb.debian.org/debian stable main contrib non-free non-free-firmware' > chroot/etc/apt/sources.list
