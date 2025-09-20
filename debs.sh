@@ -6,7 +6,7 @@ apt install dkms -y
 apt --fix-broken install -y
 apt-get install -f -y # eksik bağımlılıkları tamamlaması için.
 
-#dpkg -i --force-all /tmp/debs/*.deb
+dpkg -i --force-all /tmp/debs/*.deb
 
 
 
