@@ -4,9 +4,9 @@ apt --fix-broken install -y
 apt-get install -f -y # eksik bağımlılıkları tamamlaması için.
 apt-get install dkms -y
 
-apt-get install -y /tmp/debs/*.deb
+dpkg -i /tmp/debs/*.deb
 
-
+apt-get install -f -y # eksik bağımlılıkları tamamlaması için.
 
 #wget -nc -O /tmp/check.deb http://depo.pardus.org.tr/etap/pool/main/e/eta-check-inputdevice/eta-check-inputdevice_0.2.6_amd64.deb
 #wget -nc -O /tmp/gestemas.deb http://depo.pardus.org.tr/etap/pool/main/e/eta-gestemas/eta-gestemas_0.1.15_amd64.deb

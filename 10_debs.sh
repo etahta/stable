@@ -13,20 +13,9 @@ mkdir chroot/tmp/debs
 cp debs/* chroot/tmp/debs/
 
 
-#cp debs.sh chroot/tmp/debs/debs.sh
+cp debs.sh chroot/tmp/debs/debs.sh
 #run install
-#chroot chroot /tmp/debs/debs.sh
-chroot chroot apt --fix-broken install -y
-chroot chroot apt-get install -f -y # eksik bağımlılıkları tamamlaması için.
-chroot chroot apt-get install dkms -y
-
-chroot chroot apt-get install -y /tmp/debs/*.deb
-
-wget -nc -O chroot/tmp/novncservice.deb https://github.com/bayramkarahan/novncservice/raw/master/novncservice.deb
-chroot chroot apt-get install -y /tmp/novncservice.deb
-
-chroot chroot apt-get install -f -y # eksik bağımlılıkları tamamlaması için.
-chroot chroot apt-get --fix-broken install -y
+chroot chroot /tmp/debs/debs.sh
 
 
 wget -O chroot/tmp/firefox.tar.bz2 "https://download.mozilla.org/?product=firefox-latest-ssl&os=linux64&lang=tr"
