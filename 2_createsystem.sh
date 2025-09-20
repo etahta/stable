@@ -31,16 +31,7 @@ rm -rf chroot
 debootstrap --arch=amd64 stable chroot http://deb.debian.org/debian
 echo 'deb https://deb.debian.org/debian stable main contrib non-free non-free-firmware' > chroot/etc/apt/sources.list
 
-# Temel paketleri kur
-chroot chroot apt-get update
-chroot chroot apt-get install -y \
-    initramfs-tools \
-    linux-image-amd64 \
-    systemd \
-    udev \
-    grub2 \
-    grub2-common \
-    locales
+
     
     
 ##### For debian
@@ -68,6 +59,18 @@ chroot chroot apt-get install -y \
 # apt sandbox user root
 echo "APT::Sandbox::User root;" > chroot/etc/apt/apt.conf.d/99sandboxroot
 for i in dev dev/pts proc sys; do mount -o bind /$i chroot/$i; done
+
+# Temel paketleri kur
+chroot chroot apt-get update
+chroot chroot apt-get install -y \
+    initramfs-tools \
+    linux-image-amd64 \
+    systemd \
+    udev \
+    grub2 \
+    grub2-common \
+    locales
+    
 chroot chroot apt-get install gnupg -y
 
 #### grub packages
