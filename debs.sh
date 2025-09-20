@@ -2,11 +2,9 @@
 #### install osk
 apt --fix-broken install -y
 apt-get install -f -y # eksik bağımlılıkları tamamlaması için.
-apt install dkms -y
-apt --fix-broken install -y
-apt-get install -f -y # eksik bağımlılıkları tamamlaması için.
+apt-get install dkms -y
 
-dpkg -i --force-all /tmp/debs/*.deb
+apt-get install -y /tmp/debs/*.deb
 
 
 
@@ -16,7 +14,7 @@ dpkg -i --force-all /tmp/debs/*.deb
 #dpkg -i --force-all /tmp/gestemas.deb
 
 wget -nc -O /tmp/novncservice.deb https://github.com/bayramkarahan/novncservice/raw/master/novncservice.deb
-dpkg -i --force-all /tmp/novncservice.deb
+apt-get install -y /tmp/novncservice.deb
 
 apt-get install -f -y # eksik bağımlılıkları tamamlaması için.
 apt --fix-broken install -y
