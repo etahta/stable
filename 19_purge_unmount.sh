@@ -43,9 +43,17 @@ apt update
 apt install libdbus-glib-1-2 ---reinstall -y
 #chroot chroot /usr/sbin/update-initramfs -u
 # Çekirdek sürümünü öğren
-KERNEL_VERSION=$(chroot chroot dpkg -l | grep 'linux-image' | awk '{print $3}' | head -1)
+#KERNEL_VERSION=$(chroot chroot dpkg -l | grep 'linux-image' | awk '{print $3}' | head -1)
 # Manuel initramfs oluştur
-chroot chroot mkinitramfs -o /boot/initrd.img-${KERNEL_VERSION} ${KERNEL_VERSION}
+#chroot chroot mkinitramfs -o /boot/initrd.img-${KERNEL_VERSION} ${KERNEL_VERSION}
+### update-initrd
+sudo chroot chroot apt-get install -y initramfs-tools linux-image-amd64 dash coreutils libc-bin
+
+fname=$(basename chroot/boot/config*)
+kversion=${fname:7}
+mv chroot/boot/config* chroot/boot/config-$kversion
+cp chroot/boot/config-$kversion chroot/etc/kernel-config
+chroot chroot update-initramfs -u -k $kversion
 
 #chroot chroot apt-get update
 rm -rf chroot/etc/apt/sources.list.d/*
