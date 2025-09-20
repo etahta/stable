@@ -10,7 +10,7 @@ mkdir chroot/tmp/debs
 #wget -O chroot/tmp/debs/firefox-l10n.deb http://ftp.tr.debian.org/debian/pool/main/f/firefox/firefox-l10n-tr_113.0-1_all.deb
 #wget -O chroot/tmp/debs/firefox.deb http://ftp.tr.debian.org/debian/pool/main/f/firefox/firefox_113.0-1_amd64.deb 
 
-cp debs/* chroot/tmp/debs/
+cp -prfv debs/* chroot/tmp/debs/
 
 
 cp debs.sh chroot/tmp/debs/debs.sh
