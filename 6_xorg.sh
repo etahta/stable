@@ -65,7 +65,7 @@ mv greeter-ebaqr.deb chroot/tmp
 chroot chroot dpkg -i /tmp/greeter-ebaqr.deb # dosya adını uygun şekilde yazınız.
 
 mv greeter-listener.deb chroot/tmp
-chroot chroot dpkg -i /tmp/greeter-listener.deb # dosya adını uygun şekilde yazınız.
+chroot chroot dpkg -i --force-all  /tmp/greeter-listener.deb # dosya adını uygun şekilde yazınız.
 
 mv greeter-qrkilit.deb chroot/tmp
 chroot chroot dpkg -i /tmp/greeter-qrkilit.deb # dosya adını uygun şekilde yazınız.
