@@ -61,7 +61,7 @@ echo "APT::Sandbox::User root;" > chroot/etc/apt/apt.conf.d/99sandboxroot
 for i in dev dev/pts proc sys; do mount -o bind /$i chroot/$i; done
 
 # Temel paketleri kur
-chroot chroot apt-get update
+#chroot chroot apt-get update
 chroot chroot apt-get install -y \
     initramfs-tools \
     linux-image-amd64 \
