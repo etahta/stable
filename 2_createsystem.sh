@@ -35,7 +35,7 @@ mkdir chroot  # || true
     
     
 ##### For debian
-#ln -s sid /usr/share/debootstrap/scripts/yirmibir
+ln -s sid /usr/share/debootstrap/scripts/yirmiuc
 
 #debootstrap --arch=amd64 --no-merged-usr sid chroot https://deb.debian.org/debian
 #echo 'deb http://packages.linuxmint.com/pool/' > chroot/etc/apt/sources.list
@@ -46,11 +46,11 @@ mkdir chroot  # || true
 #debootstrap --arch=amd64 --no-merged-usr testing chroot https://deb.debian.org/debian
 #echo 'deb https://deb.debian.org/debian testing main contrib non-free non-free-firmware' > chroot/etc/apt/sources.list
 
-debootstrap --arch=amd64 stable chroot https://deb.debian.org/debian
-echo 'deb https://deb.debian.org/debian stable main contrib non-free non-free-firmware' > chroot/etc/apt/sources.list
+#debootstrap --arch=amd64 stable chroot https://deb.debian.org/debian
+#echo 'deb https://deb.debian.org/debian stable main contrib non-free non-free-firmware' > chroot/etc/apt/sources.list
 
-#debootstrap --arch=amd64 --no-merged-usr yirmibir chroot https://depo.pardus.org.tr/pardus
-#echo 'deb https://depo.pardus.org.tr/pardus yirmibir main contrib non-free' > chroot/etc/apt/sources.list
+debootstrap --arch=amd64 yirmiuc chroot https://depo.pardus.org.tr/pardus
+echo 'deb https://depo.pardus.org.tr/pardus yirmiuc main contrib non-free' > chroot/etc/apt/sources.list
 
 #debootstrap --arch=amd64 --no-merged-usr ondokuz chroot https://19.depo.pardus.org.tr/etap
 #echo 'deb https://19.depo.pardus.org.tr/etap ondokuz main contrib non-free' > chroot/etc/apt/sources.list
