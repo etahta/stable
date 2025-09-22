@@ -1,1 +1,6 @@
-../../etc/os-release
+PRETTY_NAME="E-Tahta"
+NAME="E-Tahta"
+VERSION_ID="1"
+VERSION="1 (etahta)"
+VERSION_CODENAME=etahta
+ID=etahta
