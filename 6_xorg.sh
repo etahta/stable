@@ -56,13 +56,13 @@ wget -O greeter-qrkilit.deb https://github.com/bayramkarahan/pardus-lightdm-gree
 mv greeter.deb chroot/tmp
 chroot chroot apt-get install -y /tmp/greeter.deb # dosya adını uygun şekilde yazınız.
 mv greeter-keyboard.deb chroot/tmp
-chroot chroot apt-get install -y /tmp/greeter-keyboard.deb # dosya adını uygun şekilde yazınız.
+##chroot chroot apt-get install -y /tmp/greeter-keyboard.deb # dosya adını uygun şekilde yazınız.
 
 #mv greeter-sshlogin.deb chroot/tmp
 #chroot chroot dpkg -i --force-all /tmp/greeter-sshlogin.deb # dosya adını uygun şekilde yazınız.
 
 mv greeter-ebaqr.deb chroot/tmp
-chroot chroot apt-get install -y /tmp/greeter-ebaqr.deb # dosya adını uygun şekilde yazınız.
+##chroot chroot apt-get install -y /tmp/greeter-ebaqr.deb # dosya adını uygun şekilde yazınız.
 
 mv greeter-listener.deb chroot/tmp
 chroot chroot apt-get install -y  /tmp/greeter-listener.deb # dosya adını uygun şekilde yazınız.
